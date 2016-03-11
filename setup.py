@@ -1,4 +1,10 @@
 from setuptools import setup, find_packages
+from pip.req import parse_requirements
+from pip.download import PipSession
+
+install_reqs = parse_requirements('.', session=PipSession())
+
+reqs = [str(ir.req) for ir in install_reqs]
 
 setup(
     name='staxrail',
@@ -7,7 +13,7 @@ setup(
     scripts=[],
     # zip_safe=True,
     # eager_resources=[],
-    install_requires=[],
+    install_requires=reqs,
     # dependency_links=[],
     # namespace_packages=[],
     include_package_data=True,
