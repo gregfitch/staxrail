@@ -8,7 +8,7 @@ reqs = [str(ir.req) for ir in install_reqs]
 
 setup(
     name='staxrail',
-    version='0.0.1',
+    version='0.0.2',
     packages=find_packages(),
     scripts=[],
     # zip_safe=True,
