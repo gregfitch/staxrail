@@ -13,7 +13,7 @@ setup(
     scripts=[],
     # zip_safe=True,
     # eager_resources=[],
-	install_requires=['requests>=2.9.1']
+	install_requires=['requests>=2.9.1'],
     # install_requires=reqs,
     # dependency_links=[],
     # namespace_packages=[],
