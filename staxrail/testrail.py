@@ -1419,7 +1419,8 @@ if __name__ == "__main__":
     rail = TestRailAPI(
         'https://%s.testrail.net/' % os.getenv('TESTRAIL_GROUP')
     )
-    TestRailAPI.SHOW_ALL_RESULTS = True
+    results = (os.getenv('SHOW_ALL_RESULTS', 'false')).lower() == 'true'
+    TestRailAPI.SHOW_ALL_RESULTS = results
     user_one = rail.get_user_by_id(1)
     email = user_one['email']
     email_user = rail.get_user_by_email(email)
