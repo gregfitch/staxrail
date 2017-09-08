@@ -1,19 +1,19 @@
 from setuptools import setup, find_packages
-from pip.req import parse_requirements
-from pip.download import PipSession
+# from pip.req import parse_requirements
+# from pip.download import PipSession
 
 # install_reqs = parse_requirements('.', session=PipSession())
-# 
+#
 # reqs = [str(ir.req) for ir in install_reqs]
 
 setup(
     name='staxrail',
-    version='0.0.2',
+    version='0.0.3',
     packages=find_packages(),
     scripts=[],
     # zip_safe=True,
     # eager_resources=[],
-	install_requires=['requests>=2.9.1'],
+    install_requires=['requests>=2.9.1'],
     # install_requires=reqs,
     # dependency_links=[],
     # namespace_packages=[],
@@ -33,7 +33,7 @@ setup(
     description='TestRail interface for Python 3 exposing more of the API',
     license='Creative Commons Attribution 4.0 International Public License',
     keywords='',
-	url='https://github.com/gregfitch/staxrail',
+    url='https://github.com/gregfitch/staxrail',
     # long_description=open('./README.md').read(),
     # test_suite=''
     # tests_require=[],
