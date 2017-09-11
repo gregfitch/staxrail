@@ -3,7 +3,7 @@ language: python
 python: 3.6
 install:
   - pip install -r requirements.txt
-  - pip install codecov
+  - pip install codecov pytest pytest-cov
 env:
   - TESTRAIL_GROUP=openstax
   - SHOW_ALL_RESULTS=false
