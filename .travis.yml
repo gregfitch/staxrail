@@ -1,4 +1,15 @@
+sudo: false
 language: python
 python: 3.6
-install: pip install -r requirements.txt
-script: pytest
+install:
+  - pip install -r requirements.txt
+  - pip install codecov
+env:
+  - TESTRAIL_GROUP=openstax
+  - SHOW_ALL_RESULTS=false
+  - NON_PLAN_ID=999
+  - TESTRAIL_USER="no_user_testing"
+  - TESTRAIL_VALUE=""
+script: python -m pytest -v --cov=./
+after_success:
+  - codecov

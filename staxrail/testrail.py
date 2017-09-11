@@ -14,7 +14,7 @@ import requests
 
 from time import sleep
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 
 
 class TestRailAPI(object):
@@ -1416,36 +1416,4 @@ class TestRailAPIError(Exception):
 
 if __name__ == "__main__":
     # execute only if run as a script
-    rail = TestRailAPI(
-        'https://%s.testrail.net/' % os.getenv('TESTRAIL_GROUP')
-    )
-    results = (os.getenv('SHOW_ALL_RESULTS', 'false')).lower() == 'true'
-    TestRailAPI.SHOW_ALL_RESULTS = results
-    user_one = rail.get_user_by_id(1)
-    email = user_one['email']
-    email_user = rail.get_user_by_email(email)
-    user_list = rail.get_users()
-    projects = rail.get_projects()
-    project = rail.get_project(1)
-    milestones = rail.get_milestones(1)
-    plan = rail.get_plan(90)
-    plans = rail.get_plans(1)
-    suite = rail.get_suite(1)
-    suites = rail.get_suites(1)
-    case = rail.get_case(1)
-    cases = rail.get_cases(1, {'suite_id': 1, })
-    fields = rail.get_case_fields()
-    types = rail.get_case_types()
-    priorities = rail.get_priorities()
-    templates = rail.get_templates(1)
-    result_fields = rail.get_result_fields()
-    results = rail.get_results(6865)
-    case_results = rail.get_results_for_case(65, 2)
-    run_results = rail.get_results_for_run(65)
-    test_run = rail.get_run(65)
-    test_runs = rail.get_runs(1)
-    statuses = rail.get_statuses()
-    test = rail.get_test(6865)
-    tests = rail.get_tests(65)
-    section = rail.get_section(1)
-    sections = rail.get_sections(1, {'suite_id': 1, })
+    rail = TestRailAPI
