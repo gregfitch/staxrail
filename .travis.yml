@@ -5,6 +5,5 @@ install:
   - pip install -r requirements.txt
   - pip install codecov pytest pytest-cov
 env: TESTRAIL_GROUP=openstax TESTRAIL_USER="no_user_testing" TESTRAIL_VALUE="" SHOW_ALL_RESULTS=false NON_PLAN_ID=999
-script: python -m pytest -v --cov=./
-after_success:
-  - codecov
+script: python -m pytest -v --cov-config .coveragerc --cov=staxrail test/test_testrail.py
+after_success: codecov
