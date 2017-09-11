@@ -3,3 +3,4 @@ try:
 except ImportError:  # NOQA
     from staxrail import testrail
 
+rail = testrail

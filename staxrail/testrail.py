@@ -12,10 +12,9 @@ import json
 import os
 import requests
 
-# from http import HTTPStatus as http
 from time import sleep
 
-__version__ = '0.0.1'
+__version__ = '0.0.4'
 
 
 class TestRailAPI(object):
@@ -75,25 +74,29 @@ class TestRailAPI(object):
 
     def __str__(self):
         """Return the public variables for a TestRailAPI object."""
-        return '%s: URL(%s) - User(%s)' % (self.__class__.__name__,
-                                           self.url, self.user)
+        return '%s: URL(%s) - User(%s)' % \
+            (self.__class__.__name__, self.url, self.user)
 
-    def _request_call(self, method, uri, data):
+    def _request_call(self, method, uri, data=None):
         """Class function request short-hand helper."""
         response = None
         error = None
         try:
             if method == self.POST:
-                response = self._actions[self.POST](self.url + uri,
-                                                    self.user,
-                                                    self.key,
-                                                    self.headers,
-                                                    data)
+                response = self._actions[self.POST](
+                    self.url + uri,
+                    self.user,
+                    self.key,
+                    self.headers,
+                    data
+                )
             else:
-                response = self._actions[method](self.url + uri,
-                                                 self.user,
-                                                 self.key,
-                                                 self.headers)
+                response = self._actions[method](
+                    self.url + uri,
+                    self.user,
+                    self.key,
+                    self.headers
+                )
             if response.status_code != 200 or self.SHOW_ALL_RESULTS:
                 print(response.status_code, self.url + uri)
                 print(
@@ -142,7 +145,7 @@ class TestRailAPI(object):
         """
         if data == {}:
             return ''
-        if type(data) is not dict:
+        if not isinstance(data, dict):
             raise TypeError('Parameter must be %s; received %s.' %
                             (dict, type(data)))
         fields = ''
@@ -158,7 +161,10 @@ class TestRailAPI(object):
         -------------------------------------------
         user_id (int) - The ID of the user (required)
         """
-        return self.request(self.GET, 'get_user/%s' % user_id)
+        return self.request(
+            self.GET,
+            'get_user/%s' % user_id
+        )
 
     def get_user_by_email(self, email):
         """Return user information for a specific user email.
@@ -167,11 +173,17 @@ class TestRailAPI(object):
         -------------------------------------------
         email (string) - The email address for a current user (required)
         """
-        return self.request(self.GET, 'get_user_by_email&email=%s' % email)
+        return self.request(
+            self.GET,
+            'get_user_by_email&email=%s' % email
+        )
 
     def get_users(self):
         """Return the list of users."""
-        return self.request(self.GET, 'get_users')
+        return self.request(
+            self.GET,
+            'get_users'
+        )
 
     # Projects #
     def get_project(self, project_id):
@@ -181,7 +193,10 @@ class TestRailAPI(object):
         -------------------------------------------
         project_id (int) - The ID of the project (required)
         """
-        return self.request(self.GET, 'get_project/%s' % project_id)
+        return self.request(
+            self.GET,
+            'get_project/%s' % project_id
+        )
 
     def get_projects(self, data={}):
         """Return a list of available projects.
@@ -215,7 +230,11 @@ class TestRailAPI(object):
         """
         payload = data
         payload['name'] = name
-        return self.request(self.POST, 'add_project', data=payload)
+        return self.request(
+            self.POST,
+            'add_project',
+            data=payload
+        )
 
     def update_project(self, project_id, name, data={}):
         """Update an existing project.
@@ -239,9 +258,11 @@ class TestRailAPI(object):
         """
         payload = data
         payload['name'] = name
-        return self.request(self.POST,
-                            'update_project/%s' % project_id,
-                           data=payload)
+        return self.request(
+            self.POST,
+            'update_project/%s' % project_id,
+            data=payload
+        )
 
     def delete_project(self, project_id):
         """Delete an existing project.
@@ -252,7 +273,10 @@ class TestRailAPI(object):
         -------------------------------------------
         project_id (int) - The ID of the project (required)
         """
-        return self.request(self.POST, 'delete_project/%s' % project_id)
+        return self.request(
+            self.POST,
+            'delete_project/%s' % project_id
+        )
 
     def get_configs(self, project_id):
         """Return a list of available configurations group by config groups.
@@ -261,7 +285,10 @@ class TestRailAPI(object):
         -------------------------------------------
         project_id (int) - The ID of the project (required)
         """
-        return self.request(self.GET, 'get_configs/%s' % project_id)
+        return self.request(
+            self.GET,
+            'get_configs/%s' % project_id
+        )
 
     # Milestones #
     def get_milestone(self, milestone_id):
@@ -271,7 +298,10 @@ class TestRailAPI(object):
         -------------------------------------------
         milestone_id (int) - The ID of the milestone (required)
         """
-        return self.request(self.GET, 'get_milestone/%s' % milestone_id)
+        return self.request(
+            self.GET,
+            'get_milestone/%s' % milestone_id
+        )
 
     def get_milestones(self, project_id, data={}):
         """Return a list of milestones for a specific project (by ID).
@@ -304,8 +334,11 @@ class TestRailAPI(object):
         """
         payload = data
         payload['name'] = name
-        return self.request(self.POST, 'add_milestone/%s' % project_id,
-                            data=payload)
+        return self.request(
+            self.POST,
+            'add_milestone/%s' % project_id,
+            data=payload
+        )
 
     def update_milestone(self, milestone_id, name, data={}):
         """Update an existing milestone.
@@ -322,8 +355,11 @@ class TestRailAPI(object):
         """
         payload = data
         payload['name'] = name
-        return self.request(self.POST, 'update_milestone/%s' % milestone_id,
-                            data=payload)
+        return self.request(
+            self.POST,
+            'update_milestone/%s' % milestone_id,
+            data=payload
+        )
 
     def delete_milestone(self, milestone_id):
         """Delete an existing milestone.
@@ -334,7 +370,10 @@ class TestRailAPI(object):
         -------------------------------------------
         milestone_id (int) - The ID of the milestone (required)
         """
-        return self.request(self.POST, 'delete_milestone/%s' % milestone_id)
+        return self.request(
+            self.POST,
+            'delete_milestone/%s' % milestone_id
+        )
 
     # Plan Management #
     def get_plan(self, plan_id):
@@ -344,7 +383,10 @@ class TestRailAPI(object):
         -------------------------------------------
         plan_id (int) - The ID of the test plan (required)
         """
-        return self.request(self.GET, 'get_plan/%s' % plan_id)
+        return self.request(
+            self.GET,
+            'get_plan/%s' % plan_id
+        )
 
     def get_plans(self, project_id, data={}):
         """Return a list of test plans for a specific project (by ID).
@@ -409,8 +451,11 @@ class TestRailAPI(object):
         """
         payload = data
         payload['name'] = name
-        return self.request(self.POST, 'add_plan/%s' % project_id,
-                            data=payload)
+        return self.request(
+            self.POST,
+            'add_plan/%s' % project_id,
+            data=payload
+        )
 
     def add_plan_entry(self, plan_id, suite_id, data={}):
         """Add one or more new test runs to a test plan.
@@ -440,8 +485,11 @@ class TestRailAPI(object):
         """
         payload = data
         payload['suite_id'] = suite_id
-        return self.request(self.POST, 'add_plan_entry/%s' % plan_id,
-                            data=payload)
+        return self.request(
+            self.POST,
+            'add_plan_entry/%s' % plan_id,
+            data=payload
+        )
 
     def update_plan(self, plan_id, name, data={}):
         """Update an existing test plan.
@@ -478,8 +526,11 @@ class TestRailAPI(object):
         """
         payload = data
         payload['name'] = name
-        return self.request(self.POST, 'update_plan/%s' % plan_id,
-                            data=payload)
+        return self.request(
+            self.POST,
+            'update_plan/%s' % plan_id,
+            data=payload
+        )
 
     def update_plan_entry(self, plan_id, entry_id, data={}):
         """Update one or more existing test runs in a plan.
@@ -515,7 +566,10 @@ class TestRailAPI(object):
         -------------------------------------------
         plan_id (int) - The ID of the test plan (required)
         """
-        return self.request(self.POST, 'close_plan/%s' % plan_id)
+        return self.request(
+            self.POST,
+            'close_plan/%s' % plan_id
+        )
 
     def delete_plan(self, plan_id):
         """Delete an existing test plan.
@@ -526,7 +580,10 @@ class TestRailAPI(object):
         -------------------------------------------
         plan_id (int) - The ID of the test plan (required)
         """
-        return self.request(self.POST, 'delete_plan/%s' % plan_id)
+        return self.request(
+            self.POST,
+            'delete_plan/%s' % plan_id
+        )
 
     def delete_plan_entry(self, plan_id, entry_id):
         """Delete one or more existing test runs from a plan.
@@ -540,7 +597,10 @@ class TestRailAPI(object):
         """
         return self.request(
             self.POST,
-            'delete_plan_entry/%s/%s' % (plan_id, entry_id)
+            'delete_plan_entry/%s/%s' % (
+                plan_id,
+                entry_id
+            )
         )
 
     # Test Suite Management #
@@ -551,7 +611,10 @@ class TestRailAPI(object):
         -------------------------------------------
         suite_id (int) - The ID of the test suite (required)
         """
-        return self.request(self.GET, 'get_suite/%s' % suite_id)
+        return self.request(
+            self.GET,
+            'get_suite/%s' % suite_id
+        )
 
     def get_suites(self, project_id):
         """Return a list of test suites for a project.
@@ -560,7 +623,10 @@ class TestRailAPI(object):
         -------------------------------------------
         project_id (int) - The ID of the project (required)
         """
-        return self.request(self.GET, 'get_suites/%s' % project_id)
+        return self.request(
+            self.GET,
+            'get_suites/%s' % project_id
+        )
 
     def add_suite(self, project_id, name, data={}):
         """Create a new test suite.
@@ -605,7 +671,10 @@ class TestRailAPI(object):
         -------------------------------------------
         suite_id (int) - The ID of the suite (required)
         """
-        return self.request(self.POST, 'delete_suite/%s' % suite_id)
+        return self.request(
+            self.POST,
+            'delete_suite/%s' % suite_id
+        )
 
     # Case Management #
     def get_case(self, case_id):
@@ -615,7 +684,10 @@ class TestRailAPI(object):
         -------------------------------------------
         case_id (int) - The ID of the test case (required)
         """
-        return self.request(self.GET, 'get_case/%s' % case_id)
+        return self.request(
+            self.GET,
+            'get_case/%s' % case_id
+        )
 
     def get_cases(self, project_id, data={}):
         """Return a list of test cases for a project (by project ID).
@@ -657,15 +729,24 @@ class TestRailAPI(object):
 
     def get_case_fields(self):
         """Return a list of available test case custom fields."""
-        return self.request(self.GET, 'get_case_fields')
+        return self.request(
+            self.GET,
+            'get_case_fields'
+        )
 
     def get_case_types(self):
         """Return a list of available case types."""
-        return self.request(self.GET, 'get_case_types')
+        return self.request(
+            self.GET,
+            'get_case_types'
+        )
 
     def get_priorities(self):
         """Return a list of available priority levels."""
-        return self.request(self.GET, 'get_priorities')
+        return self.request(
+            self.GET,
+            'get_priorities'
+        )
 
     def get_templates(self, project_id):
         """Return a list of available templates.
@@ -674,7 +755,10 @@ class TestRailAPI(object):
         -------------------------------------------
         project_id (int) - The ID of the project (required)
         """
-        return self.request(self.GET, 'get_templates/%s' % project_id)
+        return self.request(
+            self.GET,
+            'get_templates/%s' % project_id
+        )
 
     def add_case(self, section_id, title, data={}):
         """Create a new test case to a section.
@@ -761,7 +845,11 @@ class TestRailAPI(object):
         URL (string) - A string with matches the syntax of a URL
         User (int) - The ID of a user for the custom field
         """
-        return self.request(self.POST, 'update_case/%s' % case_id, data=data)
+        return self.request(
+            self.POST,
+            'update_case/%s' % case_id,
+            data=data
+        )
 
     def delete_case(self, case_id):
         """Delete an existing test case.
@@ -772,12 +860,18 @@ class TestRailAPI(object):
         -------------------------------------------
         case_id (int) - The ID of the test case (required)
         """
-        return self.request(self.POST, 'delete_case/%s' % case_id)
+        return self.request(
+            self.POST,
+            'delete_case/%s' % case_id
+        )
 
     # Result Management #
     def get_result_fields(self):
         """Return a list of available test result custom fields."""
-        return self.request(self.GET, 'get_result_fields')
+        return self.request(
+            self.GET,
+            'get_result_fields'
+        )
 
     def get_results(self, test_id, data={}):
         """Return a list of test results for a particular test case.
@@ -792,7 +886,10 @@ class TestRailAPI(object):
         """
         return self.request(
             self.GET,
-            'get_results/%s%s' % (test_id, self.uri_field_appends(data))
+            'get_results/%s%s' % (
+                test_id,
+                self.uri_field_appends(data)
+            )
         )
 
     def get_results_for_case(self, run_id, case_id, data={}):
@@ -1076,7 +1173,10 @@ class TestRailAPI(object):
         -------------------------------------------
         run_id (int) - The ID of the test run (required)
         """
-        return self.request(self.GET, 'get_run/%s' % run_id)
+        return self.request(
+            self.GET,
+            'get_run/%s' % run_id
+        )
 
     def get_runs(self, project_id, data={}):
         """Return a list of test runs for a project not part of a test plan.
@@ -1115,7 +1215,10 @@ class TestRailAPI(object):
 
     def get_statuses(self):
         """Return a list of available test statuses."""
-        return self.request(self.GET, 'get_statuses')
+        return self.request(
+            self.GET,
+            'get_statuses'
+        )
 
     def add_run(self, project_id, data={}):
         """Create a new test run.
@@ -1173,7 +1276,10 @@ class TestRailAPI(object):
         -------------------------------------------
         run_id (int) - The ID of the test run (required)
         """
-        return self.request(self.POST, 'close_run/%s' % run_id)
+        return self.request(
+            self.POST,
+            'close_run/%s' % run_id
+        )
 
     def delete_run(self, run_id):
         """Delete an existing test run.
@@ -1184,7 +1290,10 @@ class TestRailAPI(object):
         -------------------------------------------
         run_id (int) - The ID of the test run (required)
         """
-        return self.request(self.POST, 'delete_run/%s' % run_id)
+        return self.request(
+            self.POST,
+            'delete_run/%s' % run_id
+        )
 
     def get_test(self, test_id):
         """Return an existing test.
@@ -1193,7 +1302,10 @@ class TestRailAPI(object):
         -------------------------------------------
         test_id (int) - The ID of the test (required)
         """
-        return self.request(self.GET, 'get_test/%s' % test_id)
+        return self.request(
+            self.GET,
+            'get_test/%s' % test_id
+        )
 
     def get_tests(self, run_id, data={}):
         """Return an existing test.
@@ -1220,7 +1332,10 @@ class TestRailAPI(object):
         -------------------------------------------
         section_id (int) - The ID of the section (required)
         """
-        return self.request(self.GET, 'get_section/%s' % section_id)
+        return self.request(
+            self.GET,
+            'get_section/%s' % section_id
+        )
 
     def get_sections(self, project_id, data={}):
         """Return a list of sections for a project and test suite.
@@ -1287,7 +1402,10 @@ class TestRailAPI(object):
         -------------------------------------------
         section_id (int) - The ID of the section (required)
         """
-        return self.request(self.POST, 'delete_section/%s' % section_id)
+        return self.request(
+            self.POST,
+            'delete_section/%s' % section_id
+        )
 
 
 class TestRailAPIError(Exception):
@@ -1298,34 +1416,4 @@ class TestRailAPIError(Exception):
 
 if __name__ == "__main__":
     # execute only if run as a script
-    rail = TestRailAPI('https://%s.testrail.net/' %
-                       os.environ['TESTRAIL_GROUP'])
-    TestRailAPI.SHOW_ALL_RESULTS = True
-    user_one = rail.get_user_by_id(1)
-    email = user_one['email']
-    email_user = rail.get_user_by_email(email)
-    user_list = rail.get_users()
-    projects = rail.get_projects()
-    project = rail.get_project(1)
-    milestones = rail.get_milestones(1)
-    plan = rail.get_plan(90)
-    plans = rail.get_plans(1)
-    suite = rail.get_suite(1)
-    suites = rail.get_suites(1)
-    case = rail.get_case(1)
-    cases = rail.get_cases(1, {'suite_id': 1, })
-    fields = rail.get_case_fields()
-    types = rail.get_case_types()
-    priorities = rail.get_priorities()
-    templates = rail.get_templates(1)
-    result_fields = rail.get_result_fields()
-    results = rail.get_results(6865)
-    case_results = rail.get_results_for_case(65, 2)
-    run_results = rail.get_results_for_run(65)
-    test_run = rail.get_run(65)
-    test_runs = rail.get_runs(1)
-    statuses = rail.get_statuses()
-    test = rail.get_test(6865)
-    tests = rail.get_tests(65)
-    section = rail.get_section(1)
-    sections = rail.get_sections(1, {'suite_id': 1, })
+    rail = TestRailAPI
